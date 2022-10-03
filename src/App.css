@@ -6,7 +6,7 @@
     background-color: #282c34;
     display: grid;
     grid-auto-flow: row;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr;
     padding: 0 24px;
     min-height: 100vh;
