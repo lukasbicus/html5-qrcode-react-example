@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {AdvancedExample} from "./AdvancedExample";
 import {ScannerExample} from "./ScannerExample";
 
 function App() {
   const [selectedExample, selectExample] = useState<'scannerExample' | 'advancedExample'>('scannerExample')
-  console.log('app render')
+  const [lastScannedCode, setLastScannedCode] = useState<string | undefined>(undefined)
+  const handleCodeScanned = useCallback((code: string) => {
+    setLastScannedCode(code)
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
@@ -31,11 +34,14 @@ function App() {
           </button>
         </p>
         {selectedExample === 'scannerExample' && (
-          <ScannerExample/>
+          <ScannerExample onCodeScanned={handleCodeScanned}/>
         )}
         {selectedExample === 'advancedExample' && (
           <AdvancedExample/>
         )}
+        <div>
+          Last scanned code: {lastScannedCode}
+        </div>
       </header>
     </div>
   );
