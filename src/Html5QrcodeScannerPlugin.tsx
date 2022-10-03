@@ -67,29 +67,40 @@ export const Html5QrcodeScannerPlugin = forwardRef<IHtml5QrcodeScannerPluginForw
   }, [ref])
 
   useEffect(() => {
-    const config = {
-      fps: 4,
-      qrbox,
-      formatsToSupport: [
-        Html5QrcodeSupportedFormats.CODE_128,
-        Html5QrcodeSupportedFormats.QR_CODE
-      ],
-      rememberLastUsedCamera: true,
-      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-    }
-    html5QrcodeScanner.current = new Html5QrcodeScanner(
-      qrcodeRegionId,
-      config,
-      verbose
-    )
-    html5QrcodeScanner.current?.render(onCodeScanned, () => {
-      // nothing scanned
-    })
-    return () => {
-      html5QrcodeScanner.current?.clear().catch((e) => {
-        // eslint-disable-next-line no-console
-        console.error('Failed to clear html5QrcodeScanner. ', e)
+    const initiatedStates: (Array<Html5QrcodeScannerState | undefined>) = [
+      Html5QrcodeScannerState.SCANNING,
+      Html5QrcodeScannerState.PAUSED
+    ]
+    // prevent double initializing of scanner caused by (React.StrictMode)[https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects]
+    if (!html5QrcodeScanner.current || initiatedStates.includes(html5QrcodeScanner.current?.getState())) {
+      const config = {
+        fps: 4,
+        qrbox,
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.QR_CODE
+        ],
+        rememberLastUsedCamera: true,
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+      }
+      html5QrcodeScanner.current = new Html5QrcodeScanner(
+        qrcodeRegionId,
+        config,
+        verbose
+      )
+      html5QrcodeScanner.current?.render(onCodeScanned, () => {
+        // nothing scanned
       })
+    }
+    return () => {
+      if (html5QrcodeScanner.current &&
+        initiatedStates.includes(html5QrcodeScanner.current?.getState())
+      ) {
+        html5QrcodeScanner.current?.clear().catch((e) => {
+          // eslint-disable-next-line no-console
+          console.error('Failed to clear html5QrcodeScanner. ', e)
+        })
+      }
     }
   }, [onCodeScanned, qrbox, qrcodeRegionId, verbose])
   return <div id={qrcodeRegionId} className={className}/>
