@@ -1,13 +1,12 @@
 import {
   Html5QrcodeScanner,
   Html5QrcodeScannerState,
-  Html5QrcodeSupportedFormats
 } from 'html5-qrcode'
-import {Html5QrcodeScanType, QrDimensions} from 'html5-qrcode/esm/core'
 import React, {forwardRef, useCallback, useEffect, useRef} from 'react'
+import {Html5QrcodeScannerConfig} from "./types";
 
 interface IHtml5QrcodeScannerPluginProps {
-  qrbox: number | QrDimensions | undefined
+  config: Html5QrcodeScannerConfig
   onCodeScanned: (code: string) => void
   qrcodeRegionId: string
   waitPeriod?: number
@@ -24,7 +23,7 @@ export const Html5QrcodeScannerPlugin = forwardRef<IHtml5QrcodeScannerPluginForw
   IHtml5QrcodeScannerPluginProps>(function Html5QrcodeScannerPluginComp(
   {
     qrcodeRegionId,
-    qrbox,
+    config,
     onCodeScanned,
     waitPeriod = 750,
     verbose = false,
@@ -73,16 +72,6 @@ export const Html5QrcodeScannerPlugin = forwardRef<IHtml5QrcodeScannerPluginForw
     ]
     // prevent double initializing of scanner caused by (React.StrictMode)[https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects]
     if (!html5QrcodeScanner.current || initiatedStates.includes(html5QrcodeScanner.current?.getState())) {
-      const config = {
-        fps: 4,
-        qrbox,
-        formatsToSupport: [
-          Html5QrcodeSupportedFormats.CODE_128,
-          Html5QrcodeSupportedFormats.QR_CODE
-        ],
-        rememberLastUsedCamera: true,
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-      }
       html5QrcodeScanner.current = new Html5QrcodeScanner(
         qrcodeRegionId,
         config,
@@ -102,6 +91,6 @@ export const Html5QrcodeScannerPlugin = forwardRef<IHtml5QrcodeScannerPluginForw
         })
       }
     }
-  }, [onCodeScanned, qrbox, qrcodeRegionId, verbose])
+  }, [onCodeScanned, config, qrcodeRegionId, verbose])
   return <div id={qrcodeRegionId} className={className}/>
 })
