@@ -14,8 +14,6 @@ const CONFIG = {
   supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
 }
 const QRCODE_REGION = 'QRCODE_REGION_3'
-const WAIT_PERIOD = 1000
-
 
 export const ScannerExample: React.FC = () => {
   const handleCodeScanned = useCallback((code: string) => {
@@ -26,7 +24,6 @@ export const ScannerExample: React.FC = () => {
       config={CONFIG}
       onCodeScanned={handleCodeScanned}
       qrcodeRegionId={QRCODE_REGION}
-      waitPeriod={WAIT_PERIOD}
     />
   )
 }
