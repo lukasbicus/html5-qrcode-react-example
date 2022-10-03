@@ -45,7 +45,6 @@ export const Html5QrcodeScannerPlugin: React.FC<IHtml5QrcodeScannerPluginProps> 
         initiatedStates.includes(html5QrcodeScanner.current?.getState())
       ) {
         html5QrcodeScanner.current?.clear().catch((e) => {
-          // eslint-disable-next-line no-console
           console.error('Failed to clear html5QrcodeScanner. ', e)
         })
       }
