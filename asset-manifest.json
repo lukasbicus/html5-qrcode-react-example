@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/html5-qrcode-react-with-hooks/static/css/main.5e5618ad.css",
+    "main.js": "/html5-qrcode-react-with-hooks/static/js/main.ce081045.js",
+    "static/js/787.52e0c952.chunk.js": "/html5-qrcode-react-with-hooks/static/js/787.52e0c952.chunk.js",
+    "index.html": "/html5-qrcode-react-with-hooks/index.html",
+    "main.5e5618ad.css.map": "/html5-qrcode-react-with-hooks/static/css/main.5e5618ad.css.map",
+    "main.ce081045.js.map": "/html5-qrcode-react-with-hooks/static/js/main.ce081045.js.map",
+    "787.52e0c952.chunk.js.map": "/html5-qrcode-react-with-hooks/static/js/787.52e0c952.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e5618ad.css",
+    "static/js/main.ce081045.js"
+  ]
+}
