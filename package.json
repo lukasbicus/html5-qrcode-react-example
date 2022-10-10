@@ -2,7 +2,9 @@
   "name": "html5-qrcode-react-with-hooks",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://lukasbicus.github.io/html5-qrcode-react-with-hooks",
+  "homepage": "https://lukasbicus.github.io/html5-qrcode-react-with-hooks/",
+  "license": "MIT",
+  "author": "Lukas Bicus",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
