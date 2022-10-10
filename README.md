@@ -7,6 +7,9 @@ Some features of the example:
 - uses react hooks
 - is written in React.StrictMode
 
+## Live demo
+Live demo is available on [here](https://html5-qrcode-react-example.netlify.app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
