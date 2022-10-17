@@ -4,7 +4,7 @@ import {AdvancedExample} from "./AdvancedExample";
 import {ScannerExample} from "./ScannerExample";
 
 function App() {
-  const [selectedExample, selectExample] = useState<'scannerExample' | 'advancedExample'>('scannerExample')
+  const [selectedExample, selectExample] = useState<'scannerExample' | 'advancedExample'>('advancedExample')
   const [lastScannedCode, setLastScannedCode] = useState<string | undefined>(undefined)
   const handleCodeScanned = useCallback((code: string) => {
     setLastScannedCode(code)
