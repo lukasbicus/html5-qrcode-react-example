@@ -1,4 +1,4 @@
-# html5-qrcode with React
+# html5-qrcode react example
 
 This projects demonstrates usage of [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode) library. You can find an example with code here.
 
