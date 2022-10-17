@@ -5,13 +5,20 @@ import {
 import React, {forwardRef, useCallback, useEffect, useRef} from 'react'
 import {Html5QrcodeScannerConfig} from "./types";
 
+enum PluginState {
+  Initial = 'initial',
+  Starting = 'starting',
+  Started = 'started',
+  StartingFailed = 'startingFailed',
+  StoppingFailed = 'stoppingFailed'
+}
+
 interface IHtmlQrcodeAdvancedPluginProps {
   config: Html5QrcodeScannerConfig
   cameraId: string
   onCodeScanned: (code: string) => void
   qrcodeRegionId: string
   waitPeriod?: number
-  verbose?: boolean
   className?: string
 }
 
@@ -19,11 +26,6 @@ export interface IHtmlQrcodePluginForwardedRef {
   pause: () => void
   resume: () => void
 }
-
-const initiatedStates: (Array<Html5QrcodeScannerState | undefined>) = [
-  Html5QrcodeScannerState.SCANNING,
-  Html5QrcodeScannerState.PAUSED
-]
 
 export const HtmlQrcodeAdvancedPlugin = forwardRef<IHtmlQrcodePluginForwardedRef,
   IHtmlQrcodeAdvancedPluginProps>(function HtmlQrcodePluginComp(
@@ -33,7 +35,6 @@ export const HtmlQrcodeAdvancedPlugin = forwardRef<IHtmlQrcodePluginForwardedRef
     cameraId,
     onCodeScanned,
     waitPeriod = 750,
-    verbose = false,
     className
   }: IHtmlQrcodeAdvancedPluginProps,
   ref
@@ -73,24 +74,14 @@ export const HtmlQrcodeAdvancedPlugin = forwardRef<IHtmlQrcodePluginForwardedRef
   }, [ref])
 
   useEffect(() => {
-    // prevent double initializing of scanner caused by (React.StrictMode)[https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects]
-    if (!html5Qrcode.current || initiatedStates.includes(html5Qrcode.current?.getState())) {
+    if (!html5Qrcode.current) {
       html5Qrcode.current = new Html5Qrcode(qrcodeRegionId)
-      html5Qrcode.current
-        .start(cameraId, config, onCodeScanned, () => {
-          // nothing scanned
-        })
-        .then(() => {
-          // camera started
-        })
-        .catch(() => {
-          // camera start failed
-        })
     }
+    const prevQrcodeRegionId = qrcodeRegionId
     return () => {
-      if (html5Qrcode.current && initiatedStates.includes(html5Qrcode.current?.getState())) {
-        html5Qrcode.current
-          ?.stop()
+      if (html5Qrcode.current && prevQrcodeRegionId !== qrcodeRegionId) {
+        // stopping due changed qrcodeRegionId
+        html5Qrcode.current?.stop()
           .then(() => {
             // camera stopped
           })
@@ -99,10 +90,40 @@ export const HtmlQrcodeAdvancedPlugin = forwardRef<IHtmlQrcodePluginForwardedRef
           })
       }
     }
-  }, [
-    onCodeScanned,
-    qrcodeRegionId,
-    verbose
-  ])
+  }, [qrcodeRegionId])
+
+  const pluginStateRef = useRef<PluginState>(PluginState.Initial)
+
+  useEffect(() => {
+    if (html5Qrcode.current && pluginStateRef.current !== PluginState.Starting) {
+      pluginStateRef.current = PluginState.Starting
+      html5Qrcode.current
+        .start(cameraId, config, onCodeScanned, () => {
+          // nothing scanned
+        })
+        .then(() => {
+          // camera started
+          pluginStateRef.current = PluginState.Started
+        })
+        .catch(() => {
+          // camera start failed
+          pluginStateRef.current = PluginState.StartingFailed
+        })
+    }
+    return () => {
+      if (html5Qrcode.current && pluginStateRef.current !== PluginState.Starting) {
+        html5Qrcode.current
+          ?.stop()
+          .then(() => {
+            // camera stopped
+            pluginStateRef.current = PluginState.Initial
+          })
+          .catch(() => {
+            // camera failed to stop
+            pluginStateRef.current = PluginState.StoppingFailed
+          })
+      }
+    }
+  }, [cameraId, config, onCodeScanned])
   return <div id={qrcodeRegionId} className={className}/>
 })

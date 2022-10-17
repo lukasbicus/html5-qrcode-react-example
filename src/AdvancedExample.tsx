@@ -1,6 +1,6 @@
 import {Html5QrcodeSupportedFormats} from "html5-qrcode";
 import {Html5QrcodeScanType} from "html5-qrcode/esm/core";
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {useFetchCameras} from "./useFetchCameras";
 import {HtmlQrcodeAdvancedPlugin, IHtmlQrcodePluginForwardedRef} from "./Html5QrcodeAdvancedPlugin";
 
@@ -34,6 +34,7 @@ interface IAdvancedExampleProps {
 export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}: IAdvancedExampleProps) => {
   const {state: {loading, error, cameraDevices}} = useFetchCameras()
   const ref = useRef<IHtmlQrcodePluginForwardedRef>(null)
+  const [selectedCameraId, setSelectedCameraId] = useState<string | undefined>(undefined)
   if (loading) {
     return <Info title="Detecting available cameras"/>
   }
@@ -50,7 +51,7 @@ export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}
         config={CONFIG}
         onCodeScanned={onCodeScanned}
         qrcodeRegionId={QRCODE_REGION}
-        cameraId={cameraDevices[0].id}
+        cameraId={selectedCameraId || cameraDevices[0].id}
       />
       <button onClick={() => {
         if (ref.current) {
@@ -67,6 +68,18 @@ export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}
       >
         Resume
       </button>
+      {(cameraDevices.length > 1) && (
+        <select
+          defaultValue={cameraDevices[0].id}
+          onChange={(event) => {
+            setSelectedCameraId(event.target.value)
+          }}
+        >
+          {cameraDevices.map(device => (
+            <option key={device.id} value={device.id} label={device.label}/>
+          ))}
+        </select>
+      )}
     </div>
   )
 }
