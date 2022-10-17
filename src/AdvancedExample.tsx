@@ -57,18 +57,21 @@ export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}
         qrcodeRegionId={QRCODE_REGION}
         cameraId={selectedCameraId || cameraDevices[0].id}
       />
-      <button onClick={() => {
-        if (ref.current) {
-          ref.current.pause()
-        }
-      }}>
+      <button
+        onClick={() => {
+          if (ref.current) {
+            ref.current.pause()
+          }
+        }}
+      >
         Pause
       </button>
-      <button onClick={() => {
-        if (ref.current) {
-          ref.current.resume()
-        }
-      }}
+      <button
+        onClick={() => {
+          if (ref.current) {
+            ref.current.resume()
+          }
+        }}
       >
         Resume
       </button>

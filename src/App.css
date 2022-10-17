@@ -24,3 +24,7 @@
     max-width: 480px;
     width: 100%;
 }
+
+.App-selected-button {
+    background: #61dafb;
+}

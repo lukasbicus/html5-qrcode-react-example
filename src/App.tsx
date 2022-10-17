@@ -3,8 +3,13 @@ import './App.css';
 import {AdvancedExample} from "./AdvancedExample";
 import {ScannerExample} from "./ScannerExample";
 
+enum Example {
+  Scanner = 'scanner',
+  Advanced = 'advanced',
+}
+
 function App() {
-  const [selectedExample, selectExample] = useState<'scannerExample' | 'advancedExample'>('advancedExample')
+  const [selectedExample, selectExample] = useState<Example>(Example.Scanner)
   const [lastScannedCode, setLastScannedCode] = useState<string | undefined>(undefined)
   const handleCodeScanned = useCallback((code: string) => {
     setLastScannedCode(code)
@@ -24,20 +29,28 @@ function App() {
           &nbsp;example
         </span>
         <p>
-          <button onClick={() => {
-            selectExample('scannerExample')
-          }}>Show scanner example
+          <button
+            onClick={() => {
+              selectExample(Example.Scanner)
+            }}
+            className={selectedExample === Example.Scanner ? 'App-selected-button' : ''}
+          >
+            Show scanner example
           </button>
-          <button onClick={() => {
-            selectExample('advancedExample')
-          }}>Show advanced example
+          <button
+            onClick={() => {
+              selectExample(Example.Advanced)
+            }}
+            className={selectedExample === Example.Advanced ? 'App-selected-button' : ''}
+          >
+            Show advanced example
           </button>
         </p>
         <div className="App-example-box">
-          {selectedExample === 'scannerExample' && (
+          {selectedExample === Example.Scanner && (
             <ScannerExample onCodeScanned={handleCodeScanned}/>
           )}
-          {selectedExample === 'advancedExample' && (
+          {selectedExample === Example.Advanced && (
             <AdvancedExample onCodeScanned={handleCodeScanned}/>
           )}
         </div>
