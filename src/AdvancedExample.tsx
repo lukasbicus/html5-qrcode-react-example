@@ -35,6 +35,7 @@ export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}
   const {fetchCameras, state: {loading, error, cameraDevices}} = useFetchCameras()
   useEffect(() => {
     fetchCameras()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const ref = useRef<IHtmlQrcodePluginForwardedRef>(null)
   const [selectedCameraId, setSelectedCameraId] = useState<string | undefined>(undefined)
