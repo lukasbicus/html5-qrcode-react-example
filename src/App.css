@@ -12,9 +12,14 @@
     min-height: 100vh;
     font-size: calc(10px + 2vmin);
     color: white;
+    align-items: center;
+    justify-items: center;
 }
 
 .App-link {
     color: #61dafb;
 }
 
+.App-example-box {
+    max-width: 480px;
+}

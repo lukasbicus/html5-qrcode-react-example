@@ -33,12 +33,14 @@ function App() {
           }}>Show advanced example
           </button>
         </p>
-        {selectedExample === 'scannerExample' && (
-          <ScannerExample onCodeScanned={handleCodeScanned}/>
-        )}
-        {selectedExample === 'advancedExample' && (
-          <AdvancedExample/>
-        )}
+        <div className="App-example-box">
+          {selectedExample === 'scannerExample' && (
+            <ScannerExample onCodeScanned={handleCodeScanned}/>
+          )}
+          {selectedExample === 'advancedExample' && (
+            <AdvancedExample/>
+          )}
+        </div>
         <div>
           Last scanned code: {lastScannedCode}
         </div>
