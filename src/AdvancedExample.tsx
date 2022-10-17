@@ -1,8 +1,8 @@
 import {Html5QrcodeSupportedFormats} from "html5-qrcode";
 import {Html5QrcodeScanType} from "html5-qrcode/esm/core";
-import React from 'react'
+import React, {useRef} from 'react'
 import {useFetchCameras} from "./useFetchCameras";
-import {HtmlQrcodeAdvancedPlugin} from "./Html5QrcodeAdvancedPlugin";
+import {HtmlQrcodeAdvancedPlugin, IHtmlQrcodePluginForwardedRef} from "./Html5QrcodeAdvancedPlugin";
 
 interface IInfoProps {
   title: string
@@ -33,6 +33,7 @@ interface IAdvancedExampleProps {
 
 export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}: IAdvancedExampleProps) => {
   const {state: {loading, error, cameraDevices}} = useFetchCameras()
+  const ref = useRef<IHtmlQrcodePluginForwardedRef>(null)
   if (loading) {
     return <Info title="Detecting available cameras"/>
   }
@@ -43,11 +44,29 @@ export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}
     return <Info title="No available cameras"/>
   }
   return (
-    <HtmlQrcodeAdvancedPlugin
-      config={CONFIG}
-      onCodeScanned={onCodeScanned}
-      qrcodeRegionId={QRCODE_REGION}
-      cameraId={cameraDevices[0].id}
-    />
+    <div>
+      <HtmlQrcodeAdvancedPlugin
+        ref={ref}
+        config={CONFIG}
+        onCodeScanned={onCodeScanned}
+        qrcodeRegionId={QRCODE_REGION}
+        cameraId={cameraDevices[0].id}
+      />
+      <button onClick={() => {
+        if (ref.current) {
+          ref.current.pause()
+        }
+      }}>
+        Pause
+      </button>
+      <button onClick={() => {
+        if (ref.current) {
+          ref.current.resume()
+        }
+      }}
+      >
+        Resume
+      </button>
+    </div>
   )
 }

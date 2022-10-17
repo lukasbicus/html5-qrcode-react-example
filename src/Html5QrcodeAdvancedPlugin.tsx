@@ -16,8 +16,8 @@ interface IHtmlQrcodeAdvancedPluginProps {
 }
 
 export interface IHtmlQrcodePluginForwardedRef {
-  pause?: () => void
-  resume?: () => void
+  pause: () => void
+  resume: () => void
 }
 
 const initiatedStates: (Array<Html5QrcodeScannerState | undefined>) = [
