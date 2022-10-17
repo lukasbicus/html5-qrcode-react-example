@@ -1,6 +1,6 @@
 import {Html5QrcodeSupportedFormats} from "html5-qrcode";
 import {Html5QrcodeScanType} from "html5-qrcode/esm/core";
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useFetchCameras} from "./useFetchCameras";
 import {HtmlQrcodeAdvancedPlugin, IHtmlQrcodePluginForwardedRef} from "./Html5QrcodeAdvancedPlugin";
 
@@ -32,7 +32,10 @@ interface IAdvancedExampleProps {
 }
 
 export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}: IAdvancedExampleProps) => {
-  const {state: {loading, error, cameraDevices}} = useFetchCameras()
+  const {fetchCameras, state: {loading, error, cameraDevices}} = useFetchCameras()
+  useEffect(() => {
+    fetchCameras()
+  }, [])
   const ref = useRef<IHtmlQrcodePluginForwardedRef>(null)
   const [selectedCameraId, setSelectedCameraId] = useState<string | undefined>(undefined)
   if (loading) {

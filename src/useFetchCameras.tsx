@@ -1,6 +1,6 @@
 import {Html5Qrcode} from 'html5-qrcode'
 import {CameraDevice} from 'html5-qrcode/esm/core'
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useState} from 'react'
 
 interface IFetchCameras {
   loading: boolean
@@ -31,10 +31,7 @@ export const useFetchCameras = () => {
         cameraDevices: []
       })
     }
-  }, [])
+  }, [state.loading])
 
-  useEffect(() => {
-    fetchCameras()
-  }, [fetchCameras])
-  return {state, refetchCameras: fetchCameras}
+  return {state, fetchCameras}
 }
