@@ -1,14 +1,27 @@
 # html5-qrcode react example
 
-This projects demonstrates usage of [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode) library. You can find an example with code here.
+This projects demonstrates usage of [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode) library.
 
 Some features of the example:
 - uses latest react 18
 - uses react hooks
 - is written in React.StrictMode
 
+`ScannerExample.tsx` shows usage of `Html5QrcodeScanner`.
+
+`AdvancedExample.tsx` is more robust example. It uses `Html5Qrcode`.
+- example requests camera permissions on load
+- enables custom camera switching
+- enables to pause and resume code scanning
+- enables to freeze scanning for limited time after catching a code
+
 ## Live demo
-Live demo is available on [here](https://html5-qrcode-react-example.netlify.app/)
+
+[Live demo](https://html5-qrcode-react-example.netlify.app/)
+
+## Gif example
+
+![html5-qrcode-example](https://user-images.githubusercontent.com/5645414/196191043-2ec9f6f3-eb9d-4f8b-a8e8-ec47e1112eea.gif)
 
 ## Available Scripts
 
