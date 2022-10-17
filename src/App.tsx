@@ -38,7 +38,7 @@ function App() {
             <ScannerExample onCodeScanned={handleCodeScanned}/>
           )}
           {selectedExample === 'advancedExample' && (
-            <AdvancedExample/>
+            <AdvancedExample onCodeScanned={handleCodeScanned}/>
           )}
         </div>
         <div>

@@ -27,7 +27,11 @@ const CONFIG = {
 
 const QRCODE_REGION = 'ADVANCED_EXAMPLE_QRCODE_REGION'
 
-export const AdvancedExample: React.FC = () => {
+interface IAdvancedExampleProps {
+  onCodeScanned: (code: string) => void
+}
+
+export const AdvancedExample: React.FC<IAdvancedExampleProps> = ({onCodeScanned}: IAdvancedExampleProps) => {
   const {state: {loading, error, cameraDevices}} = useFetchCameras()
   if (loading) {
     return <Info title="Detecting available cameras"/>
@@ -41,9 +45,7 @@ export const AdvancedExample: React.FC = () => {
   return (
     <HtmlQrcodeAdvancedPlugin
       config={CONFIG}
-      onCodeScanned={(code: string) => {
-        console.log(code)
-      }}
+      onCodeScanned={onCodeScanned}
       qrcodeRegionId={QRCODE_REGION}
       cameraId={cameraDevices[0].id}
     />
